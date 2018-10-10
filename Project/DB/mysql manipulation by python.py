@@ -1,6 +1,6 @@
 # 초기 설정 부분
 import pymysql
-db = pymysql.connect(host = "35.221.101.110", user = "root", passwd = "growthhackers", db = "horserace",  charset = "utf8") # 현재 서버 ip는 35.221.101.110
+db = pymysql.connect(host = "IP", user = "root", passwd = "PW", db = "horserace",  charset = "utf8")
 cursor = db.cursor()
 
 # 테이블에 row 1줄 삽입하기
