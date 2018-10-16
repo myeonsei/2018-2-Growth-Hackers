@@ -12,7 +12,7 @@ cursor.execute("select race_result.code, race_result.date, race_result.round, ra
                race_result.rating, race_result.dandivi, race.weather, race.humidity, race.level, race.distance, race.horses, horse.total, \
                jockey.recent_all, jockey.recent_winrate, jockey.recent_winrate2, jockey.recent_winrate3, jockey.total_all, jockey.total_winrate, jockey.total_winrate2, jockey.total_winrate3 \
                from race_result, race, horse, jockey where race_result.date = race.date and race_result.round = race.round, race_result.code = horse.code and race_result.jockey = jockey.code")
-# 0-7/8-15/16-23
+# 0-7/8-15/17-23
 # weather, level one-hot 필요.
 # 최근 3경기 결과, 최근 1개월 내 질병 여부, 거리별 승률 별도로 뽑을 것.
 
@@ -46,7 +46,7 @@ for i in len(df):
     final_append.append(tmp)
     
 np.append(df, final_append, axis=1) # 위에 세 개 만든 거 붙임
-np.delete(df, (10, 12), 1) # one-hot 한 column들 날림
+np.delete(df, (10, 12), 1) # one-hot 한 column들 날림 - 제대로 되나 잘 모르겠음 ㅎㅎ;
 
 train, test = train_test_split(df, test_size = 0.3, random_state=datetime.datetime.now().second)
 real = test[:,0]
@@ -54,7 +54,7 @@ train = xgb.DMatrix(train[:,1:], label=train[:,0]) # xgb에서 쓸 수 있게 �
 test = xgb.DMatrix(test[:,1:], label=test[:,0])
 
 # 이제 xgboost 돌리자~
-param = {'max_depth':2, 'eta':1, 'gamma':0, 'lambda':1, 'silent':1, 'objective':'reg:linear'} # parameter 설정: 공부 필요
+param = {'max_depth':2, 'eta':1, 'gamma':0, 'lambda':1, 'silent':1, 'objective':'reg:linear'} # parameter 설정: 공부 필요 - linear??? 만약 각 leaf에서 linear reg 추정이라면 one-hot할 게 훨씬 많아짐
 num_round = 2
 
 bst = xgb.train(param, train, num_round) # train
