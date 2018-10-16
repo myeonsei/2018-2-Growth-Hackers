@@ -14,6 +14,7 @@ cursor.execute("select race_result.code, race_result.date, race_result.round, ra
                from race_result, race, horse, jockey where race_result.date = race.date and race_result.round = race.round, race_result.code = horse.code and race_result.jockey = jockey.code")
 # 0-7/8-15/17-23
 # weather, level one-hot 필요.
+# one-hot 후보들: distance, lane, sex
 # 최근 3경기 결과, 최근 1개월 내 질병 여부, 거리별 승률 별도로 뽑을 것.
 
 df = np.array(cursor.fetchall()) # array 형태로 받음
@@ -46,7 +47,7 @@ for i in len(df):
     final_append.append(tmp)
     
 np.append(df, final_append, axis=1) # 위에 세 개 만든 거 붙임
-np.delete(df, (10, 12), 1) # one-hot 한 column들 날림 - 제대로 되나 잘 모르겠음 ㅎㅎ;
+np.delete(df, (0, 1, 2, 10, 12), 1) # index들이랑 one-hot한 column들 날림 - 제대로 되나 잘 모르겠음 ㅎㅎ;
 
 train, test = train_test_split(df, test_size = 0.3, random_state=datetime.datetime.now().second)
 real = test[:,0]
