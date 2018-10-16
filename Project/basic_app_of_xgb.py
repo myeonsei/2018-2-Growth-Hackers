@@ -1,3 +1,5 @@
+## 돌리기 전 데이터 한 번 쭉 훑을 것 !!! 예외 처리 더 
+
 import numpy as np
 import datetime
 from sklearn.preprocessing import OneHotEncoder
