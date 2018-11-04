@@ -6,7 +6,7 @@ csvs = listdir(r'C:\ProgramData\MySQL\MySQL Server 5.7\Uploads')
 for i in csvs:
     print(i, list(pd.read_csv('C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\'+i)))
     
-# race_result: 체중은 증감 더해줘야 되고, code는 float으로 바뀐 거 다시 string으로 환원시켜줘야.
+# race_result: 체중은 증감 더해줘야 되고, code는 float으로 바뀐 거 다시 string으로 환원시켜줘야. $$ 레코드 기록 하나도 없음.
 # 체중 데이터 중에서 결측치도 있는 것 같음.
 
 def weight(x):
