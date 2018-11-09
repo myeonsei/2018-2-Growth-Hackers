@@ -1,5 +1,5 @@
 import sqlite3
-import numpy as np; import pandas as pd
+import numpy as np; import pandas as pd; from matplotlib import pyplot as plt
 import re; import datetime; from collections import Counter
 import category_encoders as ce
 from sklearn.model_selection import train_test_split
@@ -98,7 +98,7 @@ real = test[:,0]; real2 = train[:,0]
 train = xgb.DMatrix(train[:,1:], label=train[:,0]) # xgb에서 쓸 수 있게 자료형 변경
 test = xgb.DMatrix(test[:,1:], label=test[:,0])
 
-# 이제 xgboost 돌리자~
+### Run XGB
 param = {'max_depth':20, 'eta':0.09, 'gamma':0, 'lambda':1, 'silent':1, 'objective':'reg:linear', 'subsample':0.9, 'colsample_bytree':0.8} # parameter 설정: 공부 필요 - linear??? 만약 각 leaf에서 linear reg 추정이라면 one-hot할 게 훨씬 많아짐
 num_round = 200
 
@@ -108,5 +108,10 @@ preds2 = bst.predict(train)
 
 print(abs(preds - real).mean())
 print(abs(preds2 - real2).mean())# rmse 출력
+
+### Plot Feature Importance
+fig, ax = plt.subplots(figsize=(12,18))
+xgb.plot_importance(bst, max_num_features=50, height=0.8, ax=ax)
+plt.show()
 
 ## date 추가 시, test err 0.9 -> 0.8대로 감소 !
