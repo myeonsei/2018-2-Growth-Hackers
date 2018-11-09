@@ -92,11 +92,17 @@ df = np.append(df, np.array(tmp).reshape(-1,1), axis = 1)
 df = np.append(df, date, axis=1)  
                
 ### Learning
-               
+
+features = ['round', 'distance', 'humidity', 'weight_ctrl', 'dan', 'lane', 'bok', 'age', 'yeon', 'jk_weight', \
+            'weight', 'location', 'rating', 'race_grade']
+features.extend(['weather'+str(i) for i in range(1,6)])
+features.extend(['nation'+str(i) for i in range(1,9)])
+features.extend(['sex', 'cure_1mnth', 'date'])
+
 train, test = train_test_split(df, test_size = 0.3, random_state=datetime.datetime.now().second)
 real = test[:,0]; real2 = train[:,0]
-train = xgb.DMatrix(train[:,1:], label=train[:,0]) # xgb에서 쓸 수 있게 자료형 변경
-test = xgb.DMatrix(test[:,1:], label=test[:,0])
+train = xgb.DMatrix(train[:,1:], label=train[:,0], feature_names = features) # xgb에서 쓸 수 있게 자료형 변경
+test = xgb.DMatrix(test[:,1:], label=test[:,0], feature_names = features)
 
 ### Run XGB
 param = {'max_depth':20, 'eta':0.09, 'gamma':0, 'lambda':1, 'silent':1, 'objective':'reg:linear', 'subsample':0.9, 'colsample_bytree':0.8} # parameter 설정: 공부 필요 - linear??? 만약 각 leaf에서 linear reg 추정이라면 one-hot할 게 훨씬 많아짐
