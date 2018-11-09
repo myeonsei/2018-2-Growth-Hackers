@@ -44,6 +44,7 @@ def rating(x):
     
 ### Data Pre-processing -- 매우 지저분함.
     
+date = np.array(pd.DataFrame(cursor.fetchall())[0]).reshape(-1,1)
 total[8] = total[8].apply(rcd_to_sec) # 기록을 초 단위 변경
 weight = total[5] + total[6] # 최종 중량 도출
 location = total[7] == 'seo' # 서울이면 1 아니면 0
@@ -86,8 +87,9 @@ df = np.append(df, np.array(rate).reshape(-1,1), axis = 1)
 df = np.append(df, np.array(race_grade).reshape(-1,1), axis = 1)
 df = np.append(df, weather, axis = 1)
 df = np.append(df, nation, axis = 1)
-df = np.append(df, np.array(sex).reshape(-1,1), axis = 
+df = np.append(df, np.array(sex).reshape(-1,1), axis = 1)
 df = np.append(df, np.array(tmp).reshape(-1,1), axis = 1)
+df = np.append(df, date, axis=1)  
                
 ### Learning
                
@@ -106,3 +108,5 @@ preds2 = bst.predict(train)
 
 print(abs(preds - real).mean())
 print(abs(preds2 - real2).mean())# rmse 출력
+
+## date 추가 시, test err 0.9 -> 0.8대로 감소 !
